@@ -14,22 +14,27 @@ lab2:
 # Prerequisites
 the project requires ubuntu linux and bash and make sure the shell scripts have execute permission before running them
 # Step-by-Step Instructions
+the provided Makefile runs the antivirus daemon using `dir` as the monitored directory and `malicious_dir` as the quarantine directory
 # antivirus #
 1: open the terminal and navigate to the project directory
-2: create the "malicious_dir" directory:
+2: create the `malicious_dir` directory:
         make setup
 3: run the antivirus daemon:
         make antivirus
-4: the antivirus daemon monitors the "dir" directory and checks for changes every 2 seconds
-5: if a malicious file is detected it is copied to the "malicious_dir" directory and deleted from "dir"
+4: the antivirus daemon monitors the `dir` directory and checks for changes every 2 seconds
+5: if a malicious file is detected it is copied to the `malicious_dir` directory and deleted from `dir`
 6: to stop the antivirus daemon press Ctrl+C
 # restore #
 1: make sure the antivirus daemon is stopped
 2: run the restore tool:
         make restore
-3: the restore tool displays the files currently in the "malicious_dir" directory
-4; select a file by entering its number
+3: the restore tool displays the files currently in the `malicious_dir` directory
+4: select a file by entering its number
 5: choose one of the following options:
-        restore the file back to "dir"
-        permanently delete the file from "malicious_dir"
-        leave the file in "malicious_dir" and return to the list
+        restore the file back to `dir`
+        permanently delete the file from `malicious_dir`
+        leave the file in `malicious_dir` and return to the list
+# Malicious Extensions and Keywords
+the malicious file detection rules are defined inside "antivirusd.sh"
+the flagged extensions are: ".exe|.bat|.vbs|.scr|.ps1"
+the flagged keywords are: "virus | trojan | malware | worm | ransomware" and the keyword search is case insensitive
