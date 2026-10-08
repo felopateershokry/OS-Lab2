@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -ne 3 ]; then
-    echo "invalid arguments"
+    echo "invalid input"
     exit 1
 fi
 
@@ -42,7 +42,6 @@ fi
 while true
 do
     sleep "$interval"
-    echo "done"
 
     ls -l "$dir" > directory-info.new
 
