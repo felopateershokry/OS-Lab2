@@ -18,22 +18,29 @@ if [ ! -d "$malicious_dir" ]; then
     exit 1
 fi
 
-if [ -z "$(ls -A "$malicious_dir")" ]; then
-    echo "No malicious files to review"
-    exit 0
-fi
 
 while true
 do
+    if [ -z "$(ls -A "$malicious_dir")" ]; then
+        echo "No malicious files to review."
+        exit 0
+    fi
+
     files=("$malicious_dir"/*)
     i=0
     for file in "${files[@]}"
     do
         ((i++))
-        echo "$i) $file"
+        echo "$i: $file"
     done
 
     read -p "choose a file " choice
+
+    if [  "$choice" -lt 1 ] || [ "$choice" -gt "${#files[@]}" ]; then
+        echo "invalid choice"
+        continue
+    fi
+
     selected_file="${files[$((choice-1))]}"
 
     echo "1- restoring $selected_file to $dir

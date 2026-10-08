@@ -22,14 +22,14 @@ if [ ! -f directory-info.last ]; then
     for file in "$dir"/*
         do
             case "$file" in
-                *.exe | *.bat | *.vbs | *.src | *.ps1)
-                    echo "$file is malicious and it is deleted"
+                *.exe | *.bat | *.vbs | *.scr | *.ps1)
+                    echo "$file is malicious and it is DELETED"
                     cp "$file" "$malicious_dir/"
                     rm "$file"
                     ;;
                 *)
                     if grep -qiE 'virus|trojan|malware|worm|ransomware' "$file"; then
-                        echo "$file is malicious and it is deleted"
+                        echo "$file is malicious and it is DELETED"
                         cp "$file" "$malicious_dir/"
                         rm "$file"
                     fi
@@ -49,21 +49,23 @@ do
         for file in "$dir"/*
         do
             case "$file" in
-                *.exe | *.bat | *.vbs | *.src | *.ps1)
-                    echo "$file is malicious and it is deleted"
+                *.exe | *.bat | *.vbs | *.scr | *.ps1)
+                    echo "$file is malicious and it is DELETED"
                     cp "$file" "$malicious_dir/"
                     rm "$file"
                     ;;
                 *)
                     if grep -qiE 'virus|trojan|malware|worm|ransomware' "$file"; then
-                        echo "$file is malicious and it is deleted"
+                        echo "$file is malicious and it is DELETED"
                         cp "$file" "$malicious_dir/"
                         rm "$file"
                     fi
                     ;;
             esac
         done
+        ls -l "$dir" > directory-info.last
+    else
+        mv directory-info.new directory-info.last
     fi
 
-    mv directory-info.new directory-info.last
 done
