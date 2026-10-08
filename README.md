@@ -38,3 +38,23 @@ the provided Makefile runs the antivirus daemon using `dir` as the monitored dir
 the malicious file detection rules are defined inside "antivirusd.sh"
 the flagged extensions are: ".exe|.bat|.vbs|.scr|.ps1"
 the flagged keywords are: "virus | trojan | malware | worm | ransomware" and the keyword search is case insensitive
+# Bonus 1 - Cron
+# Cron Setup
+
+1: open the crontab editor:
+        crontab -e
+
+2: add the following cron job:
+        * * * * * cd /home/felopateershokry/Documents/lab2 && sleep 23 && bash antivirus-cron.sh
+        ctrl O
+        Enter
+        ctrl X
+
+3: this runs the antivirus cron script every minute at second 23
+
+4: the script scans the `dir` directory and moves malicious files to `malicious_dir`
+# Cron Expression for Every 3rd Friday
+
+        31 0 15-21 * 5
+
+this runs at 12:31 AM on Fridays that fall between the 15th and 21st day of the month, which represents the third Friday of the month
