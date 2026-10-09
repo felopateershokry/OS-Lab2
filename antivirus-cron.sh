@@ -2,6 +2,7 @@
 
 dir="dir"
 malicious_dir="malicious_dir"
+whitelist="$(dirname "$0")/whitelist.txt"
 
 if [ ! -d "$malicious_dir" ]; then
     mkdir "$malicious_dir"
@@ -15,6 +16,9 @@ do
     [ -f "$file" ] || continue
 
     filename=$(basename "$file")
+    if grep -Fxq "$filename" "$whitelist"; then
+        continue
+    fi
     malicious=false
 
     for ext in "${extensions[@]}"; do

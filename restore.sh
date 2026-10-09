@@ -48,6 +48,7 @@ do
 3- leave $selected_file and go back to the list"
     read -p "choose an option " option
     if [ "$option" = "1" ]; then
+	echo "$(basename "$selected_file")" >> whitelist.txt
         cp "$selected_file" "$dir/"
         rm "$selected_file"
         echo "Restored $selected_file to $dir"

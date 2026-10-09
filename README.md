@@ -11,6 +11,8 @@ lab2:
     README.md
     antivirus-cron.sh
     dir/
+    malicious_dir/
+    whitelist.txt
 # Prerequisites
 the project requires ubuntu linux and bash and make sure the shell scripts have execute permission before running them
 # Step-by-Step Instructions
@@ -35,9 +37,16 @@ the provided Makefile runs the antivirus daemon using `dir` as the monitored dir
         permanently delete the file from `malicious_dir`
         leave the file in `malicious_dir` and return to the list
 # Malicious Extensions and Keywords
-the malicious file detection rules are defined inside "antivirusd.sh"
-the flagged extensions are: ".exe|.bat|.vbs|.scr|.ps1"
-the flagged keywords are: "virus | trojan | malware | worm | ransomware" and the keyword search is case insensitive
+
+the malicious file detection rules are defined inside `antivirusd.sh`
+
+the flagged extensions are: `.exe`, `.bat`, `.vbs`, `.scr`, and `.ps1`
+
+only the final file extension is checked
+
+the flagged keywords are: `virus`, `trojan`, `malware`, `worm`, and `ransomware`
+
+keyword matching is case insensitive and matches substrings anywhere in the file contents
 # Bonus 1 - Cron
 # Cron Setup
 
@@ -55,6 +64,24 @@ the flagged keywords are: "virus | trojan | malware | worm | ransomware" and the
 4: the script scans the `dir` directory and moves malicious files to `malicious_dir`
 # Cron Expression for Every 3rd Friday
 
-        31 0 15-21 * 5
+31 0 15-21 * 5
 
 this runs at 12:31 AM on Fridays that fall between the 15th and 21st day of the month, which represents the third Friday of the month
+
+# Bonus 2 - Whitelist
+the whitelist stores the names of files that were identified as false positives and restored by the user
+files listed in the whitelist are ignored by the antivirus scripts even if their contents contain malicious keywords or their extensions are flagged
+# How It Works
+1: when the user restores a file using `restore.sh` its filename is added to `whitelist.txt`
+2: the `antivirusd.sh` daemon checks the whitelist before scanning each file
+3: the `antivirus-cron.sh` script also checks the whitelist before scanning each file
+4: whitelisted files are skipped and are not moved to `malicious_dir`
+5: the whitelist is stored in `whitelist.txt` so its entries remain available after the scripts stop or restart
+6: The whitelist is based on filenames therefore another file with the same filename will also be skipped by the antivirus scripts
+# Testing
+1: restore a quarantined file using `restore.sh`
+2: verify that its filename has been added to `whitelist.txt`
+3: place a file with the same name in `dir` and include a malicious keyword such as `virus` in its contents
+4: run `antivirusd.sh` and verify that the file remains in `dir`
+5: run `antivirus-cron.sh` and verify that the file also remains in `dir`
+6: test a file that is not whitelisted and contains a malicious keyword verify that it is moved to `malicious_dir`
